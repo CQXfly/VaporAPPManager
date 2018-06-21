@@ -92,15 +92,6 @@
         }
       },
       {
-        "package": "Service",
-        "repositoryURL": "https://github.com/vapor/service.git",
-        "state": {
-          "branch": null,
-          "revision": "281a70b69783891900be31a9e70051b6fe19e146",
-          "version": "1.0.0"
-        }
-      },
-      {
         "package": "SQL",
         "repositoryURL": "https://github.com/vapor/sql.git",
         "state": {
@@ -110,38 +101,11 @@
         }
       },
       {
-        "package": "swift-nio",
-        "repositoryURL": "https://github.com/apple/swift-nio.git",
+        "package": "Service",
+        "repositoryURL": "https://github.com/vapor/service.git",
         "state": {
           "branch": null,
-          "revision": "695afc5205aaa49fca092b94b479ff71c43d9d3c",
-          "version": "1.8.0"
-        }
-      },
-      {
-        "package": "swift-nio-ssl",
-        "repositoryURL": "https://github.com/apple/swift-nio-ssl.git",
-        "state": {
-          "branch": null,
-          "revision": "0adc938bc8de3d3829b842f9767d81c7480b8403",
-          "version": "1.1.1"
-        }
-      },
-      {
-        "package": "swift-nio-ssl-support",
-        "repositoryURL": "https://github.com/apple/swift-nio-ssl-support.git",
-        "state": {
-          "branch": null,
-          "revision": "c02eec4e0e6d351cd092938cf44195a8e669f555",
-          "version": "1.0.0"
-        }
-      },
-      {
-        "package": "swift-nio-zlib-support",
-        "repositoryURL": "https://github.com/apple/swift-nio-zlib-support.git",
-        "state": {
-          "branch": null,
-          "revision": "37760e9a52030bb9011972c5213c3350fa9d41fd",
+          "revision": "281a70b69783891900be31a9e70051b6fe19e146",
           "version": "1.0.0"
         }
       },
@@ -188,6 +152,42 @@
           "branch": null,
           "revision": "141cb4d3814dc8062cb0b2f43e72801b5dfcf272",
           "version": "1.0.1"
+        }
+      },
+      {
+        "package": "swift-nio",
+        "repositoryURL": "https://github.com/apple/swift-nio.git",
+        "state": {
+          "branch": null,
+          "revision": "695afc5205aaa49fca092b94b479ff71c43d9d3c",
+          "version": "1.8.0"
+        }
+      },
+      {
+        "package": "swift-nio-ssl",
+        "repositoryURL": "https://github.com/apple/swift-nio-ssl.git",
+        "state": {
+          "branch": null,
+          "revision": "0adc938bc8de3d3829b842f9767d81c7480b8403",
+          "version": "1.1.1"
+        }
+      },
+      {
+        "package": "swift-nio-ssl-support",
+        "repositoryURL": "https://github.com/apple/swift-nio-ssl-support.git",
+        "state": {
+          "branch": null,
+          "revision": "c02eec4e0e6d351cd092938cf44195a8e669f555",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "swift-nio-zlib-support",
+        "repositoryURL": "https://github.com/apple/swift-nio-zlib-support.git",
+        "state": {
+          "branch": null,
+          "revision": "37760e9a52030bb9011972c5213c3350fa9d41fd",
+          "version": "1.0.0"
         }
       }
     ]

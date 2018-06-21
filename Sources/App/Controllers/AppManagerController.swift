@@ -7,14 +7,13 @@ final class AppManagerController {
     func index(_ req: Request) throws -> Future<[AppModel]> {
         return AppModel.query(on: req).all()
     }
-
     
     func uploadAppInfo(_ req: Request) throws -> Future<AppModel> {
         return try req.content.decode(AppModel.self).flatMap { appModel in
-            let cardid = try MD5.hash(appModel.APPName! + appModel.bundleid!).hexEncodedString().lowercased()
-            appModel.APPCardid = cardid
+            let cardid = try MD5.hash(appModel.appName! + appModel.bundleid!).hexEncodedString().lowercased()
+            appModel.appCardid = cardid
             
-            let apps = AppModel.query(on: req).filter(\.APPName == appModel.APPName)
+            let apps = AppModel.query(on: req).filter(\.appName == appModel.appName)
             
             return apps.first().flatMap({ (pack) -> EventLoopFuture<AppModel> in
                 guard let pack = pack else {
@@ -26,7 +25,7 @@ final class AppManagerController {
         }
     }
     
-    /// pages query 
+    /// pages query
     func queryApps(_ req: Request) throws -> Future<[AppModel]> {
         
         guard let page = req.query[Int.self,at:"page"] else {
@@ -53,7 +52,7 @@ final class AppManagerController {
             throw abort
         }
         
-        let app = AppModel.query(on: req).filter(\.APPName == appName)
+        let app = AppModel.query(on: req).filter(\.appName == appName)
         
         
         return app.first().map(to: QueryStatusReturnModel.self, { (pack) -> QueryStatusReturnModel in
@@ -61,10 +60,10 @@ final class AppManagerController {
                 throw Abort(.notFound)
             }
             
-            let re = QueryStatusReturnModel(appstatus: (pack.appstatus!), validDay: (pack.validDay!),appName:pack.APPName!)
+            let re = QueryStatusReturnModel(appstatus: (pack.appstatus!), validDay: (pack.validDay!),appName:pack.appName!)
             
             return re
-
+            
         })
     }
     
@@ -73,7 +72,7 @@ final class AppManagerController {
             throw Abort(.notFound)
         }
         
-        let app = AppModel.query(on: req).filter(\.APPName == appName)
+        let app = AppModel.query(on: req).filter(\.appName == appName)
         
         return app.first().map(to: AppModel.self, { (pack) -> AppModel in
             guard let pack = pack else {
@@ -87,12 +86,12 @@ final class AppManagerController {
     
     /// gengxin xinshuju
     func update(_ req: Request) throws -> Future<[String:String]> {
-//        AppModel.update(AppModel.self)
+        //        AppModel.update(AppModel.self)
         return try req.content.decode(AppModel.self).flatMap { appModel in
-            let cardid = try MD5.hash(appModel.APPName! + appModel.bundleid!).hexEncodedString().lowercased()
-            appModel.APPCardid = cardid
+            let cardid = try MD5.hash(appModel.appName! + appModel.bundleid!).hexEncodedString().lowercased()
+            appModel.appCardid = cardid
             appModel.appstatus = 0
-            appModel.appstatus = 2
+            appModel.validDay = 2
             let model = appModel.save(on: req)
             print(model)
             return Future.map(on: req, {
@@ -106,17 +105,17 @@ final class AppManagerController {
     func create(_ req: Request) throws -> Future<AppModel> {
         return try req.content.decode(AppModel.self).flatMap { appModel in
             
-            guard let appname = appModel.APPName , let bundlid = appModel.bundleid else {
+            guard let appname = appModel.appName , let bundlid = appModel.bundleid else {
                 throw Abort(.notFound)
             }
             let cardid = try MD5.hash(appname + bundlid).hexEncodedString().lowercased()
-            appModel.APPCardid = cardid
+            appModel.appCardid = cardid
             appModel.appstatus = 0
             let model = appModel.save(on: req)
             return model
         }
     }
-
+    
     func updateAppStatus(_ req: Request) throws -> Future<AppModel> {
         
         let deviceID = try req.content.decode(QueryStatusReturnModel.self)
@@ -125,10 +124,10 @@ final class AppManagerController {
         return deviceID.flatMap { param in
             print(param)
             
-            let apps = AppModel.query(on: req).filter(\.APPName == param.appName).all()
+            let apps = AppModel.query(on: req).filter(\.appName == param.appName).all()
             
             return apps.flatMap(to: AppModel.self, { models in
-    
+                
                 guard let model = models.first else {
                     throw Abort(.notFound)
                 }
@@ -138,12 +137,13 @@ final class AppManagerController {
                 
             })
         }
-
+        
     }
-
+    
     func delete(_ req: Request) throws -> Future<HTTPStatus> {
         return try req.parameters.next(AppModel.self).flatMap { model in
             return model.delete(on: req)
-        }.transform(to: .ok)
+            }.transform(to: .ok)
     }
 }
+

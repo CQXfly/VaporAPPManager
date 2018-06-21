@@ -14,6 +14,12 @@ struct  QueryStatusReturnModel: Content {
     var appName: String
 }
 
+struct AppResult<T>:Content where T : Codable{
+    var code: Int
+    var message: String
+    var data:T
+}
+
 struct PageQueryModel: Content {
     var num: Int
     var page: Int
