@@ -102,7 +102,7 @@ final class AppManagerController {
         }
     }
     
-    func create(_ req: Request) throws -> Future<AppModel> {
+    func create(_ req: Request) throws -> Future<AppResult<AppModel>> {
         return try req.content.decode(AppModel.self).flatMap { appModel in
             
             guard let appname = appModel.appName , let bundlid = appModel.bundleid else {
@@ -112,7 +112,13 @@ final class AppManagerController {
             appModel.appCardid = cardid
             appModel.appstatus = 0
             let model = appModel.save(on: req)
-            return model
+            return model.map(to:AppResult<AppModel>.self , { model in
+                
+                return AppResult<AppModel>(code: 200, message: "successful", data: model)
+                
+            }).catch({ (err) in
+                return AppResult<AppModel>(code: 400, message: "error", data:nil )
+            })
         }
     }
     

@@ -17,7 +17,7 @@ struct  QueryStatusReturnModel: Content {
 struct AppResult<T>:Content where T : Codable{
     var code: Int
     var message: String
-    var data:T
+    var data:T？
 }
 
 struct PageQueryModel: Content {
