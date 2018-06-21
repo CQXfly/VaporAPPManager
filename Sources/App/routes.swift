@@ -8,8 +8,16 @@ public func routes(_ router: Router) throws {
     }
 
     // Example of configuring a controller
-    let todoController = TodoController()
-    router.get("todos", use: todoController.index)
-    router.post("todos", use: todoController.create)
-    router.delete("todos", Todo.parameter, use: todoController.delete)
+    let appManagerController = AppManagerController()
+    router.get("todos", use: appManagerController.index)
+    router.post("create", use: appManagerController.create)
+    router.delete("delete", AppModel.parameter, use: appManagerController.delete)
+    router.get("app", use: appManagerController.queryAppName)
+    router.get("queryapps", use: appManagerController.queryApps)
+    router.get("appStatus", use: appManagerController.queryAppStatus)
+    router.post("modifyApp", use: appManagerController.updateAppStatus)
+    router.post("uploadAppInfo", use: appManagerController.uploadAppInfo)
+    
+
+    
 }
