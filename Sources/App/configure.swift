@@ -24,11 +24,10 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     services.register(migrations)
     
     /// Register custom MySQL Config
-    let mysqlConfig = MySQLDatabaseConfig(hostname: "localhost", port: 3306, username: "root", password: "fox123456", database: "test_sql")
+    let mysqlConfig = MySQLDatabaseConfig(hostname: "localhost", port: 3306, username: "root", password: "fox123456", database: "fox")
     services.register(mysqlConfig)
     
     var z = NIOServerConfig.default()
-    z.hostname = "192.168.33.6"
+//    z.hostname = "192.168.33.6"
     services.register(z)
-
 }

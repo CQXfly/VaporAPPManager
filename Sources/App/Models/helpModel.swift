@@ -8,6 +8,11 @@
 import FluentMySQL
 import Vapor
 
+enum NotFoundType{
+    case param([String])
+    case model
+}
+
 struct  QueryStatusReturnModel: Content {
     var appstatus: Int
     var validDay: Int
@@ -19,6 +24,28 @@ struct AppResult<T>:Content where T : Codable{
     var message: String
     var data:T?
 }
+
+func AppResultNotFound<T>(type:NotFoundType,on: Worker) -> Future<AppResult<T>> {
+    return Future.map(on: on, {
+        
+        return AppResultNotFound(type: type)
+    })
+}
+
+func AppResultNotFound<T>(type: NotFoundType) -> AppResult<T>{
+    var message = "error"
+    switch type {
+    case .model:
+        message = "has no data in database"
+    case .param(let s):
+        message = s.reduce("", {
+            $0 + ("has no params \($1) \n")
+        })
+    }
+    
+    return AppResult(code: 400, message: message, data:nil )
+}
+
 
 struct PageQueryModel: Content {
     var num: Int
@@ -32,6 +59,8 @@ func FoxParamtersAbort(_ input:String ...) -> Abort {
     })
     return fox
 }
+
+
 
 
 
