@@ -17,6 +17,7 @@ final class AppManagerController : RouteCollection {
         group.get("appStatus", use: queryAppStatus)
         group.post("modifyApp", use: updateAppStatus)
         group.post("uploadAppInfo", use: uploadAppInfo)
+        group.get("test", use: testQuery)
     }
 }
 
@@ -179,6 +180,81 @@ extension AppManagerController {
         return try req.parameters.next(AppModel.self).flatMap { model in
             return model.delete(on: req)
             }.transform(to: .ok)
+    }
+    
+    func testQuery(_ req: Request) throws -> Future<AppResult<[AppModel]>> {
+        
+        let q = req.withPooledConnection(to: .mysql, closure: { conn in
+            return conn.query("select * from appmodel")
+        })
+        
+        return q.map({ rows in
+            
+            let new = rows.map({ z -> AppModel in
+                
+                let a = AppModel()
+               
+                // 比较丑陋 可以做个映射 但实际情况 复杂查询的返回字段很少不需要很多信息
+                z.keys.forEach({ key in
+                    let x = z[key]
+                    let k = key.name
+                    switch k {
+                    case "id" , "appstatus", "validDay" :
+                        do{
+                            let r = try x?.decode(Int.self)
+                            print(r!)
+                            if (key.name == "id"){
+                                a.id = r
+                            } else if (key.name == "appstatus") {
+                                a.appstatus = r
+                            } else {
+                                a.validDay = r
+                            }
+                            
+                        } catch {
+                            
+                        }
+                        break
+                    case "startTime", "endTime":
+                        do {
+                            let r = try x?.decode(Date.self)
+                            print(r!)
+                            if (key.name == "startTime"){
+                                a.startTime = r
+                            }
+                            
+                        } catch {
+                            
+                        }
+                    default:
+                        do{
+                            let r = try x?.decode(String.self)
+                            print(r!)
+                            if (key.name == "appCardid"){
+                                a.appCardid = r
+                            } else if (key.name == "appName" ) {
+                                a.appName = r
+                            } else if (key.name == "bundleid") {
+                                a.bundleid = r
+                            } else if (key.name == "bundleVersion") {
+                                a.bundleVersion = r
+                            } else if (key.name == "provisionName" ) {
+                                a.provisionName = r
+                            } else {
+                                a.markMessage = r
+                            }
+                        } catch {
+                            
+                        }
+                        break
+                    }
+                })
+                return a
+            })
+        
+            return AppResult(code: 200, message: "", data: new)
+        })
+        
     }
 }
 

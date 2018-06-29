@@ -34,6 +34,10 @@ final class AppModel: MySQLModel {
     
     static var createdAtKey:TimestampKey? {return \.startTime}
     
+    init() {
+        
+    }
+    
     init(id: Int? = nil, appCardid: String? ,appName: String?,  bundleid: String?,bundleVersion: String?,provisionName: String?,appstatus: Int? = 0,validDay: Int? = 2, markmessage: String?,_ startime:Date?,_ endTime: Date?) {
         self.id = id
         self.appName = appName
