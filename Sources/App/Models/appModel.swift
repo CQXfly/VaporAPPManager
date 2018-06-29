@@ -4,6 +4,8 @@ import Vapor
 
 final class AppModel: MySQLModel {
     
+    static let name = "appmodel"
+    
     var id: Int?
     
     var appCardid: String?
@@ -32,6 +34,10 @@ final class AppModel: MySQLModel {
     
     static var createdAtKey:TimestampKey? {return \.startTime}
     
+    init() {
+        
+    }
+    
     init(id: Int? = nil, appCardid: String? ,appName: String?,  bundleid: String?,bundleVersion: String?,provisionName: String?,appstatus: Int? = 0,validDay: Int? = 2, markmessage: String?,_ startime:Date?,_ endTime: Date?) {
         self.id = id
         self.appName = appName
@@ -55,3 +61,9 @@ extension AppModel: Content { }
 /// Allows `Todo` to be used as a dynamic parameter in route definitions.
 extension AppModel: Parameter { }
 
+
+extension AppModel {
+//    func willCreate(on conn: MySQLConnection) throws -> EventLoopFuture<AppModel> {
+//
+//    }
+}
